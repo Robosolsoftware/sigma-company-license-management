@@ -73,6 +73,9 @@ codeunit 60500 "Check Item License"
         FinalPostingCode: Code[20];
         FindCategory: Code[20];
         CheckValidation: Boolean;
+        AttributeValue: Text[500];
+        ItemAttributeValue: Record "Item Attribute Value";
+        ItemAttribute: Record "Item Attribute";
     begin
         RecItem.Reset();
         RecItem.SetRange("No.", ItemNo);
@@ -84,6 +87,19 @@ codeunit 60500 "Check Item License"
         RecItemAttValMap.SetRange("No.", ItemNo);
         if RecItemAttValMap.FindSet() then begin
             repeat
+                //New Code Added 09/26/2021+++
+                Clear(AttributeValue);
+                ItemAttribute.Reset();
+                ItemAttribute.SetRange(ID, RecItemAttValMap."Item Attribute ID");
+                if ItemAttribute.FindFirst() then begin
+                    ItemAttributeValue.SetRange("Attribute ID", ItemAttribute.ID);
+                    ItemAttributeValue.SetRange(ID, RecItemAttValMap."Item Attribute Value ID");
+                    if ItemAttributeValue.FindFirst() then begin
+                        AttributeValue := ItemAttributeValue.Value;
+                    end;
+                end;
+
+
                 Clear(CompanyLicenseFound);
                 Clear(licenseCopulsary);
                 RecLicenseLine.CalcFields(Status);
@@ -135,7 +151,7 @@ codeunit 60500 "Check Item License"
                                         if (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Both) or (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Purchase) then begin
                                             licenseCopulsary := true;
                                             //ValidateCompanyLicense(CalledFrom, CompanyNo, RecItem."Item Category Code", RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, true, PostCode);
-                                            ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, true, PostCode);
+                                            ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, true, PostCode, ItemNo, AttributeValue);
                                         end;
                                     end;
                                 end Else Begin
@@ -143,7 +159,7 @@ codeunit 60500 "Check Item License"
                                         if (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Both) or (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Purchase) then begin
                                             licenseCopulsary := true;
                                             //ValidateCompanyLicense(CalledFrom, CompanyNo, RecItem."Item Category Code", RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, false, PostCode);
-                                            ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, false, PostCode);
+                                            ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, false, PostCode, ItemNo, AttributeValue);
                                         end;
                                     end;
                                 End;
@@ -153,7 +169,7 @@ codeunit 60500 "Check Item License"
                                         if (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Both) or (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Sales) then begin
                                             licenseCopulsary := true;
                                             //ValidateCompanyLicense(CalledFrom, CompanyNo, RecItem."Item Category Code", RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, true, PostCode);
-                                            ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, true, PostCode);
+                                            ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, true, PostCode, ItemNo, AttributeValue);
                                         end;
                                     end;
                                 end Else Begin
@@ -161,14 +177,16 @@ codeunit 60500 "Check Item License"
                                         if (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Both) or (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Sales) then begin
                                             licenseCopulsary := true;
                                             //ValidateCompanyLicense(CalledFrom, CompanyNo, RecItem."Item Category Code", RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, false, PostCode);
-                                            ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, false, PostCode);
+                                            ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, false, PostCode, ItemNo, AttributeValue);
                                         end;
                                     end;
                                 End;
                             end;
                         end;
                     until RecLicenseLine.Next = 0;
-                    if licenseCopulsary = true then begin
+                    //Bug+++
+                    //Commented by Abdul+++
+                    /*if licenseCopulsary = true then begin
                         if CompanyLicenseFound = false then begin
                             //25feb++
                             if RecLicenseLine."Warning Type" = RecLicenseLine."Warning Type"::Error then begin
@@ -186,7 +204,9 @@ codeunit 60500 "Check Item License"
                             if RecLicenseLine."Warning Type" = RecLicenseLine."Warning Type"::" " then//25feb
                                 Error('License setup manadatory found and valid customer licence not found');
                         end;
-                    end;
+                    end;*/
+                    //Commented by Abdul+++
+                    //bug--
                 end;
             until RecItemAttValMap.Next = 0;
         end;
@@ -195,9 +215,11 @@ codeunit 60500 "Check Item License"
 
 
 
-    local procedure ValidateCompanyLicense(CalledFrom: Option "Sales","Purchase"; CompanyNo: code[20]; ItemCatCode: Code[20]; ItemAttrId: Integer; ItemAttrValueId: Integer; LicenseCode: Code[100]; PostingGroup: Code[20]; shippingCountry: Text[30]; OrderDate: Date; countryvalidation: Boolean; PostCode: code[20])
+    local procedure ValidateCompanyLicense(CalledFrom: Option "Sales","Purchase"; CompanyNo: code[20]; ItemCatCode: Code[20]; ItemAttrId: Integer; ItemAttrValueId: Integer; LicenseCode: Code[100]; PostingGroup: Code[20]; shippingCountry: Text[30]; OrderDate: Date; countryvalidation: Boolean; PostCode: code[20]; ItemCode: Code[20]; AttributeValue: Text[500])
     var
         ReccomplicensLine: Record "Company License Line";
+        RecLicenseLine: Record "License Line";
+        ConfirmManagement: Codeunit "Confirm Management";
     begin
         ReccomplicensLine.Reset();
         ReccomplicensLine.SetRange("Company No.", CompanyNo);
@@ -228,11 +250,26 @@ codeunit 60500 "Check Item License"
             //Error('Valid Licence Not Found');
         end;
 
-        //if licenseCopulsary = true then begin
-        /*if CompanyLicenseFound = false then begin
-            Error('License setup manadatory found and valid customer licence not found');
-        end;*/
-        // end;
+        //New Code Added 09262021+++
+        if CompanyLicenseFound = false then begin
+            RecLicenseLine.Reset();
+            RecLicenseLine.SetRange("License Code", LicenseCode);
+            if RecLicenseLine.FindFirst() then begin
+                RecLicenseLine.CalcFields("Warning Text", "Warning Type");
+                if RecLicenseLine."Warning Type" = RecLicenseLine."Warning Type"::Error then begin
+                    Error('%1 for Item No.: %2 and Item Attribute: %3', RecLicenseLine."Warning Text", ItemCode, AttributeValue);
+                end;
+                if RecLicenseLine."Warning Type" = RecLicenseLine."Warning Type"::Warning then begin
+                    if not ConfirmManagement.GetResponseOrDefault(StrSubstNo('%1 for Item No.: %2 and Item Attribute: %3', RecLicenseLine."Warning Text", ItemCode, AttributeValue), true) then begin
+                        Error('Process Stopped Please Revert Changes');
+                    end else begin
+                    end;
+                end;
+                if RecLicenseLine."Warning Type" = RecLicenseLine."Warning Type"::" " then
+                    Error('License setup manadatory found and valid customer licence not found');
+            end;
+        end;
+        //New Code Added 09262021+++
 
     end;
 
