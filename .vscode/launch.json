@@ -2,19 +2,20 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "al",
-            "request": "launch",
             "name": "Microsoft cloud sandbox",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "Sandbox",
+            "environmentName": "Robo_Dev",
+            "tenant": "1cf41952-b687-4c56-8f2b-96e0a300c5c7",
+            "startupObjectId": 22,
+            "startupObjectType": "Page",
             "breakOnError": true,
             "launchBrowser": true,
             "enableLongRunningSqlStatements": true,
-            "schemaUpdateMode":"Synchronize",    
             "enableSqlInformationDebugger": true,
-            "environmentType": "Sandbox",
-            //"environmentName": "ICS_SandBox",
-            "environmentName": "Robosol_DEMO",
-            //"tenant": "101a8ff1-cdf5-4497-a35c-bb53032e7f9a",
-            "tenant": "1cf41952-b687-4c56-8f2b-96e0a300c5c7"
+            //"schemaUpdateMode": "Recreate"
+
         }
     ]
 }
