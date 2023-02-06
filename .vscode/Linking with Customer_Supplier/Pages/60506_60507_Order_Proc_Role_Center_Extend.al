@@ -8,7 +8,7 @@ pageextension 60506 "Order Proc. Role Center Extend" extends "Order Processor Ro
     actions
     {
         // Add changes to page actions here
-        addafter(SetupAndExtensions)
+        addafter("Sales Orders")
         {
             group("Company License Management")
             {
