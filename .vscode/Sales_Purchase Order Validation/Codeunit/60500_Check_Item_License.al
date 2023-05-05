@@ -228,11 +228,15 @@ codeunit 60500 "Check Item License"
         ReccomplicensLine.SetRange("Item Attribute Value ID", ItemAttrValueId);
         ReccomplicensLine.SetRange("License Code", LicenseCode);
         ReccomplicensLine.SetRange("Posting Group", PostingGroup);
+        ReccomplicensLine.CalcFields("Post code");
+        if PostCode <> '' then
+            ReccomplicensLine.SetRange("Post code", PostCode);
         if countryvalidation then
             ReccomplicensLine.SetRange("Shipping Country", shippingCountry);
         //ReccomplicensLine.SetRange(Mandatory, true);25 feb
         if ReccomplicensLine.FindFirst() then begin
             ReccomplicensLine.CalcFields(Status, "Grant Date", "Expiry Date", "Post code");
+            ReccomplicensLine.CalcFields("Post code");
             if ReccomplicensLine."Post code" = PostCode then begin
                 if ReccomplicensLine.Status = ReccomplicensLine.Status::Release then begin
                     if (ReccomplicensLine."Grant Date" <= OrderDate) and (ReccomplicensLine."Expiry Date" >= OrderDate) then begin
