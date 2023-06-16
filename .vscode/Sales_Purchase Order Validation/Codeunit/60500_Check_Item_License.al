@@ -36,6 +36,7 @@ codeunit 60500 "Check Item License"
             //to get post code and custpostgrp
             RecSalesHeader.Reset();
             RecSalesHeader.SetRange("No.", Rec."Document No.");
+            RecSalesHeader.SetFilter("Document Type", '%1|%2', RecSalesHeader."Document Type"::Order, RecSalesHeader."Document Type"::Quote);
             if RecSalesHeader.FindFirst() then
                 ValidateLicense(0, RecSalesHeader."Sell-to Customer No.", RecSalesHeader."Customer Posting Group", RecSalesHeader."Ship-to Country/Region Code", RecSalesHeader."Order Date", Rec."No.", RecSalesHeader."Ship-to Post Code")
             else
@@ -54,6 +55,7 @@ codeunit 60500 "Check Item License"
             //to get post code and custpostgrp
             RecPurchHeader.Reset();
             RecPurchHeader.SetRange("No.", Rec."Document No.");
+            RecPurchHeader.SetFilter("Document Type", '%1|%2', RecPurchHeader."Document Type"::Order, RecPurchHeader."Document Type"::Quote);
             if RecPurchHeader.FindFirst() then
                 ValidateLicense(1, RecPurchHeader."Buy-from Vendor No.", RecPurchHeader."Vendor Posting Group", RecPurchHeader."Buy-from Country/Region Code", RecPurchHeader."Order Date", Rec."No.", RecPurchHeader."Buy-from Post Code")
             else
