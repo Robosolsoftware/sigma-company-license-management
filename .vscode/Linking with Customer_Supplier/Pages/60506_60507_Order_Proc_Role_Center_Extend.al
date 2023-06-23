@@ -48,7 +48,7 @@ pageextension 60507 "Business manager Extend" extends "Business Manager Role Cen
     actions
     {
         // Add changes to page actions here
-        addafter("Services & Extensions")
+        addlast(processing)
         {
             group("Company License Management")
             {
