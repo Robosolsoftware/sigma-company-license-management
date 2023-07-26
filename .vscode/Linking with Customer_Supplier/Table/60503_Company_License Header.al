@@ -207,17 +207,35 @@ table 60503 "Company License Header"
             trigger OnValidate()
             var
                 recshiptocode: Record "Ship-to Address";
+                Recorderaddress: Record "Order Address";
             begin
-                recshiptocode.Reset();
-                recshiptocode.SetRange(Code, Rec."Ship-to-Code");
-                if recshiptocode.FindFirst() then begin
-                    Validate(Address, recshiptocode.Address);
-                    Validate(Country, recshiptocode."Country/Region Code");
-                    Validate("Post code", recshiptocode."Post Code");
+                if Rec."Company Type" = Rec."Company Type"::Customer then begin
+                    recshiptocode.Reset();
+                    recshiptocode.SetRange(Code, Rec."Ship-to-Code");
+                    if recshiptocode.FindFirst() then begin
+                        Validate(Address, recshiptocode.Address);
+                        Validate(Country, recshiptocode."Country/Region Code");
+                        Validate("Post code", recshiptocode."Post Code");
+                    end else begin
+                        Validate(Address, '');
+                        Validate(Country, '');
+                        Validate("Post code", '');
+                    end;
+
+                    //vik++ added code as per Vaibhav
                 end else begin
-                    Validate(Address, '');
-                    Validate(Country, '');
-                    Validate("Post code", '');
+                    Recorderaddress.Reset();
+                    Recorderaddress.SetRange(Code, Rec."Ship-to-Code");
+                    if Recorderaddress.FindFirst() then begin
+                        Validate(Address, Recorderaddress.Address);
+                        Validate(Country, Recorderaddress."Country/Region Code");
+                        Validate("Post code", Recorderaddress."Post Code");
+                    end else begin
+                        Validate(Address, '');
+                        Validate(Country, '');
+                        Validate("Post code", '');
+                    end;
+                    //vik--
                 end;
             end;
             //discussion 23dec2020

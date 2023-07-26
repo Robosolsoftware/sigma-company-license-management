@@ -39,8 +39,8 @@ codeunit 60500 "Check Item License"
             RecSalesHeader.SetFilter("Document Type", '%1|%2', RecSalesHeader."Document Type"::Order, RecSalesHeader."Document Type"::Quote);
             if RecSalesHeader.FindFirst() then
                 ValidateLicense(0, RecSalesHeader."Sell-to Customer No.", RecSalesHeader."Customer Posting Group", RecSalesHeader."Ship-to Country/Region Code", RecSalesHeader."Order Date", Rec."No.", RecSalesHeader."Ship-to Post Code")
-            else
-                Error('Sales Header not found for Line %1', Rec.RecordId);
+            // else
+            //     Error('Sales Header not found for Line %1', Rec.RecordId);
         end;
     end;
 
@@ -58,8 +58,8 @@ codeunit 60500 "Check Item License"
             RecPurchHeader.SetFilter("Document Type", '%1|%2', RecPurchHeader."Document Type"::Order, RecPurchHeader."Document Type"::Quote);
             if RecPurchHeader.FindFirst() then
                 ValidateLicense(1, RecPurchHeader."Buy-from Vendor No.", RecPurchHeader."Vendor Posting Group", RecPurchHeader."Buy-from Country/Region Code", RecPurchHeader."Order Date", Rec."No.", RecPurchHeader."Buy-from Post Code")
-            else
-                Error('Purchase Header not found for Line %1', Rec.RecordId);
+            // else
+            //     Error('Purchase Header not found for Line %1', Rec.RecordId);
         end;
     end;
 
@@ -279,6 +279,20 @@ codeunit 60500 "Check Item License"
 
     end;
 
+    procedure Exist_Header(_ComplicensLine: Record "Company License Line"): Boolean
+    var
+        L_CompanyLicenseHeader: Record "Company License Header";
+    begin
+        L_CompanyLicenseHeader.Reset();
+        L_CompanyLicenseHeader.SetRange("Company No.", _ComplicensLine."Company No.");
+        L_CompanyLicenseHeader.SetRange("License No.", _ComplicensLine."License No.");
+        L_CompanyLicenseHeader.SetRange("License Code", _ComplicensLine."License Code");
+        if not L_CompanyLicenseHeader.IsEmpty then
+            exit(true)
+        else
+            exit(false);
+    end;
+
 
 
     trigger OnRun()
@@ -485,9 +499,11 @@ codeunit 60500 "Check Item License"
         L_ItemCategory: Record "Item Category";
     begin
         L_ItemCategory.Reset();
-        L_ItemCategory.SetRange("Parent Category", ChildCategory);
+        //L_ItemCategory.SetRange("Parent Category", ChildCategory);//Wrong code commneted Azhar
+        L_ItemCategory.SetRange(Code, ChildCategory);//Right Code Added Azhar
         if L_ItemCategory.FindFirst() then
-            exit(L_ItemCategory.Code);
+            exit(L_ItemCategory."Parent Category");//Right Code Added Azhar
+        //exit(L_ItemCategory.Code);//Wrong code commneted Azhar
     end;
 
 

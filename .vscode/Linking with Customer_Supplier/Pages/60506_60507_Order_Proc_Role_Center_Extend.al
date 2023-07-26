@@ -8,7 +8,7 @@ pageextension 60506 "Order Proc. Role Center Extend" extends "Order Processor Ro
     actions
     {
         // Add changes to page actions here
-        addafter("Sales Orders")
+        addlast(sections)
         {
             group("Company License Management")
             {
@@ -48,7 +48,7 @@ pageextension 60507 "Business manager Extend" extends "Business Manager Role Cen
     actions
     {
         // Add changes to page actions here
-        addlast(processing)
+        addlast(sections)
         {
             group("Company License Management")
             {
