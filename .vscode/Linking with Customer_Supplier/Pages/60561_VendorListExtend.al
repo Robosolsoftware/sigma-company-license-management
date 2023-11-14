@@ -1,4 +1,4 @@
-pageextension 60508 "Customer Card Extend" extends "Customer Card"
+pageextension 60561 "Vendor List Extend" extends "Vendor List"
 {
     layout
     {
@@ -6,22 +6,22 @@ pageextension 60508 "Customer Card Extend" extends "Customer Card"
     }
 
     actions
-    {//25 feb ++
-        addafter("&Jobs")
+    {
+        addafter("Return Orders")
         {
+            //25 feb ++
             action("Company License")
             {
                 ApplicationArea = all;
                 Image = Job;
                 Promoted = true;
-                PromotedCategory = Category8;
+                PromotedCategory = Category6;
                 RunObject = Page "Company License Header List";
-                RunPageLink = "Company No." = FIELD("No."), "Company Type" = filter(Customer);
+                RunPageLink = "Company No." = FIELD("No."), "Company Type" = filter(Supplier);
                 RunPageView = SORTING("Company Type", "Company No.", "License No.", "License Code");
             }
-
+            //25 feb --
         }
-        //25 feb --
     }
 
     var

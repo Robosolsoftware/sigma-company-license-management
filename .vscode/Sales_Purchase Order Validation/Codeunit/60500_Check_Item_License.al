@@ -21,7 +21,7 @@ CalledFrom: Event subscribers (ValidateLicense)
 ++++++++++++++++++++++++Structured code for license check+++++++++++++++++++++++ CS+++++++
 */
 
-codeunit 60500 "Check Item License"
+codeunit 60551 "Check Item License"
 {
 
 

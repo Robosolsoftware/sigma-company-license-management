@@ -1,4 +1,4 @@
-page 60502 "License Line Subform"
+page 60553 "License Line Subform"
 {
 
     PageType = ListPart;

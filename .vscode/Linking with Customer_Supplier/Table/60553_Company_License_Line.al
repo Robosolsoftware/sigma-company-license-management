@@ -1,4 +1,4 @@
-table 60502 "Company License Line"
+table 60553 "Company License Line"
 {
 
     DataClassification = ToBeClassified;

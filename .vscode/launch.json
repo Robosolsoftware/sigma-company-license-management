@@ -6,19 +6,15 @@
             "request": "launch",
             "type": "al",
             "environmentType": "Sandbox",
-             "environmentName": "IPCA_Sandbox",
-            "tenant": "89474cd2-9049-4de2-8697-34230879aa18",
-            //"environmentName": "Robosol_Dev",
-            //"environmentName": "Transport_Dev",
-            //  "environmentName": "Sandbox_UAT",
-           // "tenant": "c535ee05-2791-4a11-b2e8-93c557c4deb6",
+            "environmentName": "Sigma_UAT",
+            "tenant": "55614040-8b3d-41a1-bae8-2140b06bd0c3",
             "startupObjectId": 22,
             "startupObjectType": "Page",
             "breakOnError": true,
             "launchBrowser": true,
             "enableLongRunningSqlStatements": true,
             "enableSqlInformationDebugger": true,
-            //"schemaUpdateMode": "Recreate"
+            "schemaUpdateMode": "ForceSync"
 
         }
     ]

@@ -1,4 +1,4 @@
-table 60500 "License Header"
+table 60551 "License Header"
 {
 
     DataClassification = ToBeClassified;

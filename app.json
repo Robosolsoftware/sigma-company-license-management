@@ -3,7 +3,7 @@
   "name": "Company License Management",
   "applicationInsightsKey": "72429472-1fe7-4058-9576-fd4fbfec525e",
   "publisher": "Robosol Software UK Ltd",
-  "version": "20.0.0.4",
+  "version": "20.0.0.0",
   "brief": "",
   "description": "",
   "privacyStatement": "",
@@ -17,8 +17,8 @@
   "application": "19.0.0.0",
   "idRanges": [
     {
-      "from": 60500,
-      "to": 60550
+      "from": 60551,
+      "to": 60600
     }
   ],
   "resourceExposurePolicy": {

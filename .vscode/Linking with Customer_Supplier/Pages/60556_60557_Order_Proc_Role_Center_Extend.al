@@ -1,4 +1,4 @@
-pageextension 60506 "Order Proc. Role Center Extend" extends "Order Processor Role Center"
+pageextension 60556 "Order Proc. Role Center Extend" extends "Order Processor Role Center"
 {
     layout
     {
@@ -38,7 +38,7 @@ pageextension 60506 "Order Proc. Role Center Extend" extends "Order Processor Ro
         myInt: Integer;
 }
 
-pageextension 60507 "Business manager Extend" extends "Business Manager Role Center"
+pageextension 60557 "Business manager Extend" extends "Business Manager Role Center"
 {
     layout
     {

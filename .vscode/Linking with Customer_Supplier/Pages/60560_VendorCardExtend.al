@@ -1,4 +1,4 @@
-pageextension 60511 "Vendor List Extend" extends "Vendor List"
+pageextension 60560 "Vendor Card Extend" extends "Vendor Card"
 {
     layout
     {
@@ -7,7 +7,7 @@ pageextension 60511 "Vendor List Extend" extends "Vendor List"
 
     actions
     {
-        addafter("Return Orders")
+        addafter(Purchases)
         {
             //25 feb ++
             action("Company License")
@@ -15,13 +15,14 @@ pageextension 60511 "Vendor List Extend" extends "Vendor List"
                 ApplicationArea = all;
                 Image = Job;
                 Promoted = true;
-                PromotedCategory = Category6;
+                PromotedCategory = Category7;
                 RunObject = Page "Company License Header List";
                 RunPageLink = "Company No." = FIELD("No."), "Company Type" = filter(Supplier);
                 RunPageView = SORTING("Company Type", "Company No.", "License No.", "License Code");
             }
             //25 feb --
         }
+
     }
 
     var

@@ -1,4 +1,4 @@
-page 60503 "Company License Header List"
+page 60554 "Company License Header List"
 {
     Caption = 'Company License Header List';//25jan
 

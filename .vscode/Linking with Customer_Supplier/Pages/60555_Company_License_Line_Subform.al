@@ -1,4 +1,4 @@
-page 60504 "Company License Line Subform"
+page 60555 "Company License Line Subform"
 {
 
     Caption = 'Company License Line Subform';//25jan

@@ -1,4 +1,4 @@
-page 60500 "License Header List"
+page 60551 "License Header List"
 {
 
     PageType = List;
