@@ -691,13 +691,39 @@ codeunit 60551 "Check Item License"
     local procedure FindParentCategory(ChildCategory: Code[20]): code[20]
     var
         L_ItemCategory: Record "Item Category";
+        CategoryCode: Code[20];
+        Loop_ParentCategoryCode: Code[20];
     begin
+        // L_ItemCategory.Reset();
+        // //L_ItemCategory.SetRange("Parent Category", ChildCategory);//Wrong code commneted Azhar
+        // L_ItemCategory.SetRange(Code, ChildCategory);//Right Code Added Azhar
+        // if L_ItemCategory.FindFirst() then
+        //     exit(L_ItemCategory."Parent Category");//Right Code Added Azhar
+        // //exit(L_ItemCategory.Code);//Wrong code commneted Azhar
+
+
+        //The below code is only for SIGMA Process++
+        //Check the first Parent category code of Child Category++
+        Clear(Loop_ParentCategoryCode);
+        Clear(CategoryCode);
         L_ItemCategory.Reset();
-        //L_ItemCategory.SetRange("Parent Category", ChildCategory);//Wrong code commneted Azhar
-        L_ItemCategory.SetRange(Code, ChildCategory);//Right Code Added Azhar
-        if L_ItemCategory.FindFirst() then
-            exit(L_ItemCategory."Parent Category");//Right Code Added Azhar
-        //exit(L_ItemCategory.Code);//Wrong code commneted Azhar
+        L_ItemCategory.SetRange(Code, ChildCategory);
+        if L_ItemCategory.FindFirst() then begin
+            Loop_ParentCategoryCode := L_ItemCategory."Parent Category";
+            CategoryCode := L_ItemCategory."Parent Category";
+        end;
+
+        //Find the last parent category Code++
+        repeat
+            L_ItemCategory.Reset();
+            if L_ItemCategory.Get(Loop_ParentCategoryCode) then begin
+                Loop_ParentCategoryCode := L_ItemCategory."Parent Category";
+                if L_ItemCategory."Parent Category" <> '' then
+                    CategoryCode := L_ItemCategory."Parent Category";
+            end else
+                Loop_ParentCategoryCode := '';
+        until Loop_ParentCategoryCode = '';
+        exit(CategoryCode);
     end;
 
 

@@ -32,6 +32,7 @@ table 60554 "Company License Header"
                     if reccustomer.FindFirst() then begin
                         Validate("Company Name", reccustomer.Name);
                         Validate("Post code", reccustomer."Post Code");
+                        Validate("Company Posting Group", reccustomer."Customer Posting Group");
                     end;
                 end else begin
                     recvendor.Reset();
@@ -39,11 +40,13 @@ table 60554 "Company License Header"
                     if recvendor.FindFirst() then begin
                         Validate("Company Name", recvendor.Name);
                         Validate("Post code", recvendor."Post Code");
+                        Validate("Company Posting Group", recvendor."Vendor Posting Group");
                     end;
                 end;
                 if Rec."Company No." = '' then begin
                     Rec."Company Name" := '';
                     Rec."Post code" := '';
+                    Rec."Company Posting Group" := '';
                 end;
             end;
 
@@ -264,6 +267,12 @@ table 60554 "Company License Header"
             Editable = false;
             OptionCaptionML = ENU = 'Open,Release';
             OptionMembers = Open,Release;
+        }
+        field(16; "Company Posting Group"; Code[20])
+        {
+            TableRelation = if ("Company Type" = const(Customer)) "Customer Posting Group".Code else
+            if ("Company Type" = const(Supplier)) "Vendor Posting Group".Code;
+            Editable = false;
         }
     }
 

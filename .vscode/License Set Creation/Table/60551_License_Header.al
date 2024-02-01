@@ -73,7 +73,6 @@ table 60551 "License Header"
         {
 
         }
-
     }
 
     keys

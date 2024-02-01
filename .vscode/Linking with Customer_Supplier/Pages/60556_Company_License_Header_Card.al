@@ -109,6 +109,11 @@ page 60556 "Company License Header Card"
                     ApplicationArea = all;//25jan
                     //Caption = 'Review Date';//25jan
                 }
+                field("Company Posting Group"; Rec."Company Posting Group")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
                 field("Ship-to-Code"; Rec."Ship-to-Code")//25jan
                 {
                     ApplicationArea = all;//25jan
