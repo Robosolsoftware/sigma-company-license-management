@@ -16,8 +16,6 @@ pageextension 60556 "Order Proc. Role Center Extend" extends "Order Processor Ro
                 {
                     ApplicationArea = Suite;
                     Caption = 'License Set Creation';
-                    Promoted = true;
-                    PromotedCategory = Process;
                     RunObject = Page "License Header List";
                     ToolTip = 'Company License Management License Set Creation.';
                 }
@@ -25,8 +23,6 @@ pageextension 60556 "Order Proc. Role Center Extend" extends "Order Processor Ro
                 {
                     ApplicationArea = Suite;
                     Caption = 'Linking License Set';
-                    Promoted = true;
-                    PromotedCategory = Process;
                     RunObject = Page "Company License Header List";
                     ToolTip = 'Company License Management License Link with Customer or Supplier.';
                 }

@@ -422,7 +422,7 @@ codeunit 60551 "Check Item License"
         ReccomplicensLine.SetRange("Item Category", ItemCatCode);
         ReccomplicensLine.SetRange("Item Attribute ID", ItemAttrId);
         ReccomplicensLine.SetRange("Item Attribute Value ID", ItemAttrValueId);
-        ReccomplicensLine.SetRange("License Code", LicenseCode);
+        //ReccomplicensLine.SetRange("License Code", LicenseCode);
         ReccomplicensLine.SetRange("Posting Group", PostingGroup);
         ReccomplicensLine.CalcFields("Post code");
         if PostCode <> '' then
