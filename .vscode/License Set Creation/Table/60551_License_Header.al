@@ -112,6 +112,8 @@ table 60551 "License Header"
 
     trigger OnDelete()
     begin
+        Rec.TestField(Status, Status::Open);
+
         //19feb++
         RecLicenseLine.Reset();
         RecLicenseLine.SetRange("License Code", Rec."License Code");

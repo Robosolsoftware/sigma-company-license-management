@@ -144,9 +144,12 @@ table 60554 "Company License Header"
                                 reccomplicenselineinsert."Item Attribute ID" := reclicenseline."Item Attribute ID";
                                 reccomplicenselineinsert."Item Attribute Value" := reclicenseline."Item Attribute Value";
                                 reccomplicenselineinsert."Item Attribute Value ID" := reclicenseline."Item Attribute Value ID";
-                                reclicenseline.CalcFields(Country, "Customer Posting Group");
+                                reclicenseline.CalcFields(Country, "Customer Posting Group", "Supplier Posting Group", "Apply To");
                                 reccomplicenselineinsert."Shipping Country" := reclicenseline.Country;//2feb 2021
-                                reccomplicenselineinsert."Posting Group" := reclicenseline."Customer Posting Group";//2feb 2021
+                                if reclicenseline."Apply To" = reclicenseline."Apply To"::Purchase then
+                                    reccomplicenselineinsert."Posting Group" := reclicenseline."Supplier Posting Group"
+                                else
+                                    reccomplicenselineinsert."Posting Group" := reclicenseline."Customer Posting Group";//2feb 2021
                                 reccomplicenselineinsert.Insert();
                                 lineno += 10000;
                             //end else begin
@@ -303,6 +306,8 @@ table 60554 "Company License Header"
 
     trigger OnDelete()
     begin
+        Rec.TestField(Status, Status::Open);
+
         //19feb++
         RecCompLicenseLine.Reset();
         RecCompLicenseLine.SetRange("Company No.", Rec."Company No.");

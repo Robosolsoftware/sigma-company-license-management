@@ -63,7 +63,7 @@ codeunit 60551 "Check Item License"
         end;
     end;
 
-    local procedure ValidateLicense(CalledFrom: Option "Sales","Purchase"; CompanyNo: code[20]; PostingGroup: Code[20]; shippingCountry: Text[30]; OrderDate: Date; ItemNo: Code[20]; PostCode: code[20])
+    procedure ValidateLicense(CalledFrom: Option "Sales","Purchase"; CompanyNo: code[20]; PostingGroup: Code[20]; shippingCountry: Text[30]; OrderDate: Date; ItemNo: Code[20]; PostCode: code[20])
     var
         ConfirmManagement: Codeunit "Confirm Management";
         RecLicenceHeader: Record "License Header";
