@@ -32,6 +32,10 @@ codeunit 60551 "Check Item License"
         RecSalesHeader: Record "Sales Header";
         RecItem: Record Item;
     begin
+        //!!!!!!!
+        //Important Note:- If you making any changes in Company License so please make same changes in function ForIntegration_ValidateLicense of sames codunit.
+        //!!!!!!!
+
         if Rec.Type = Rec.Type::Item then begin
             //to get post code and custpostgrp
             RecSalesHeader.Reset();
@@ -215,7 +219,7 @@ codeunit 60551 "Check Item License"
     end;
 
 
-    procedure ForIntegration_ValidateLicense(CalledFrom: Option "Sales","Purchase"; CompanyNo: code[20]; PostingGroup: Code[20]; shippingCountry: Text[30]; OrderDate: Date; ItemNo: Code[20]; PostCode: code[20]; var _CompanyLicenseError: Text[100]; var _Attribute: Code[20])
+    procedure ForIntegration_ValidateLicense(CalledFrom: Option "Sales","Purchase"; CompanyNo: code[20]; PostingGroup: Code[20]; shippingCountry: Text[30]; OrderDate: Date; ItemNo: Code[20]; PostCode: code[20]; var _Attribute: Code[20]) _CompanyLicenseError: Text[100]
     var
         ConfirmManagement: Codeunit "Confirm Management";
         RecLicenceHeader: Record "License Header";
@@ -231,6 +235,9 @@ codeunit 60551 "Check Item License"
         ItemAttributeValue: Record "Item Attribute Value";
         ItemAttribute: Record "Item Attribute";
     begin
+        Clear(_CompanyLicenseError);
+
+
         RecItem.Reset();
         RecItem.SetRange("No.", ItemNo);
         if RecItem.FindFirst() then;
@@ -299,7 +306,6 @@ codeunit 60551 "Check Item License"
                                                     FinalPostingCode := RecLicenseLine."Supplier Posting Group";
                                                 end;
                             */
-                            Clear(_CompanyLicenseError);
                             Clear(_Attribute);
                             if CalledFrom = CalledFrom::Purchase then begin
                                 If RecLicenseLine."Country Validation" = RecLicenseLine."Country Validation"::" " then begin
@@ -308,6 +314,10 @@ codeunit 60551 "Check Item License"
                                             licenseCopulsary := true;
                                             _CompanyLicenseError := ForIntegration_ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, true, PostCode, ItemNo, AttributeValue);
                                             _Attribute := AttributeValue;
+
+                                            //Exit If First License not found++
+                                            if _CompanyLicenseError <> '' then
+                                                exit;
                                         end;
                                     end;
                                 end Else Begin
@@ -316,6 +326,10 @@ codeunit 60551 "Check Item License"
                                             licenseCopulsary := true;
                                             _CompanyLicenseError := ForIntegration_ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, false, PostCode, ItemNo, AttributeValue);
                                             _Attribute := AttributeValue;
+
+                                            //Exit If First License not found++
+                                            if _CompanyLicenseError <> '' then
+                                                exit;
                                         end;
                                     end;
                                 End;
@@ -326,6 +340,10 @@ codeunit 60551 "Check Item License"
                                             licenseCopulsary := true;
                                             _CompanyLicenseError := ForIntegration_ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, true, PostCode, ItemNo, AttributeValue);
                                             _Attribute := AttributeValue;
+
+                                            //Exit If First License not found++
+                                            if _CompanyLicenseError <> '' then
+                                                exit;
                                         end;
                                     end;
                                 end Else Begin
@@ -334,6 +352,10 @@ codeunit 60551 "Check Item License"
                                             licenseCopulsary := true;
                                             _CompanyLicenseError := ForIntegration_ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, false, PostCode, ItemNo, AttributeValue);
                                             _Attribute := AttributeValue;
+
+                                            //Exit If First License not found++
+                                            if _CompanyLicenseError <> '' then
+                                                exit;
                                         end;
                                     end;
                                 End;
@@ -356,7 +378,7 @@ codeunit 60551 "Check Item License"
         ReccomplicensLine.SetRange("Item Category", ItemCatCode);
         ReccomplicensLine.SetRange("Item Attribute ID", ItemAttrId);
         ReccomplicensLine.SetRange("Item Attribute Value ID", ItemAttrValueId);
-        ReccomplicensLine.SetRange("License Code", LicenseCode);
+        //ReccomplicensLine.SetRange("License Code", LicenseCode);
         ReccomplicensLine.SetRange("Posting Group", PostingGroup);
         ReccomplicensLine.CalcFields("Post code");
         if PostCode <> '' then
@@ -405,7 +427,6 @@ codeunit 60551 "Check Item License"
             end;
         end;
         //New Code Added 09262021+++
-
     end;
 
 
