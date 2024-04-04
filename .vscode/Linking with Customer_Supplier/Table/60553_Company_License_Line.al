@@ -274,7 +274,6 @@ table 60553 "Company License Line"
             Editable = false;
             FieldClass = FlowField;
             CalcFormula = lookup("Company License Header"."Post code" where("Company No." = field("Company No."), "Company Type" = field("Company Type"), "License No." = field("License No."), "License Code" = field("License Code")));
-
         }
         field(15; "Status"; Option)
         {

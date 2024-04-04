@@ -167,14 +167,14 @@ table 60554 "Company License Header"
         }
         field(7; "Grant Date"; Date)
         {
-            //discussion 23dec2020++
-            trigger OnValidate()
-            var
-            begin
-                if Rec."Grant Date" > Today then
-                    Error('Invalid Date');
-            end;
-            //discussion 23dec2020--
+            // //discussion 23dec2020++
+            // trigger OnValidate()
+            // var
+            // begin
+            //     if Rec."Grant Date" > Today then
+            //         Error('Invalid Date');
+            // end;
+            // //discussion 23dec2020--
         }
         field(8; "Expiry Date"; Date)
         {
@@ -281,7 +281,7 @@ table 60554 "Company License Header"
 
     keys
     {
-        key(PK; "Company Type", "Company No.", "License No.", "License Code")
+        key(PK; "Company Type", "Company No.", "Ship-to-Code", "License No.", "License Code")
         {
             Clustered = true;
         }
