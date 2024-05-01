@@ -118,6 +118,7 @@ page 60556 "Company License Header Card"
                 {
                     ApplicationArea = all;//25jan
                     //Caption = 'Ship-to-Code';//25jan
+                    Editable = Rec."Company Type" <> Rec."Company Type"::Customer;
                 }
                 field(Address; Rec.Address)
                 {
