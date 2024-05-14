@@ -82,6 +82,7 @@ codeunit 60551 "Check Item License"
         AttributeValue: Text[500];
         ItemAttributeValue: Record "Item Attribute Value";
         ItemAttribute: Record "Item Attribute";
+        tes: Codeunit "Whse.-Activity-Post";
     begin
         RecItem.Reset();
         RecItem.SetRange("No.", ItemNo);
@@ -153,7 +154,7 @@ codeunit 60551 "Check Item License"
                             */
                             if CalledFrom = CalledFrom::Purchase then begin
                                 If RecLicenseLine."Country Validation" = RecLicenseLine."Country Validation"::" " then begin
-                                    if (RecLicenseLine."Customer Posting Group" = PostingGroup) and (RecLicenseLine.Country = shippingCountry) then begin
+                                    if (RecLicenseLine."Supplier Posting Group" = PostingGroup) and (RecLicenseLine.Country = shippingCountry) then begin
                                         if (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Both) or (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Purchase) then begin
                                             licenseCopulsary := true;
                                             //ValidateCompanyLicense(CalledFrom, CompanyNo, RecItem."Item Category Code", RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, true, PostCode);
@@ -161,7 +162,7 @@ codeunit 60551 "Check Item License"
                                         end;
                                     end;
                                 end Else Begin
-                                    if (RecLicenseLine."Customer Posting Group" = PostingGroup) then begin
+                                    if (RecLicenseLine."Supplier Posting Group" = PostingGroup) then begin
                                         if (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Both) or (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Purchase) then begin
                                             licenseCopulsary := true;
                                             //ValidateCompanyLicense(CalledFrom, CompanyNo, RecItem."Item Category Code", RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, false, PostCode);

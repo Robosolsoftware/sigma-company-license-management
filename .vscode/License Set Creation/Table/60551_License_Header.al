@@ -18,6 +18,19 @@ table 60551 "License Header"
         field(3; Mandatory; Boolean)
         {
             //DataClassification = ToBeClassified;
+            trigger OnValidate()
+            var
+                LicenseLine: Record "License Line";
+            begin
+                LicenseLine.Reset();
+                LicenseLine.SetRange("License Code", Rec."License Code");
+                if LicenseLine.FindSet() then begin
+                    repeat
+                        LicenseLine.Validate(Mandatory, Rec.Mandatory);
+                        LicenseLine.Modify();
+                    until LicenseLine.Next() = 0;
+                end;
+            end;
         }
         field(4; "Apply To"; Option)
         {
