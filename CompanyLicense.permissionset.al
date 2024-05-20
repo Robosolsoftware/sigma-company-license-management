@@ -1,4 +1,4 @@
-permissionset 60551 CLMPremission
+permissionset 60551 CompanyLicense
 {
     Assignable = true;
     Permissions = tabledata "Company License Header"=RIMD,

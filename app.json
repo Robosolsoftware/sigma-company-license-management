@@ -2,7 +2,7 @@
   "id": "1a0f1d96-00b3-4f86-b25b-d0af4bcd74f4",
   "name": "Company License Management",
   "publisher": "Robosol Software UK Ltd",
-  "version": "22.0.0.0",
+  "version": "24.0.0.0",
   "brief": "",
   "description": "",
   "privacyStatement": "",
@@ -17,7 +17,7 @@
   "idRanges": [
     {
       "from": 60551,
-      "to": 60600
+      "to": 60590
     }
   ],
   "resourceExposurePolicy": {
