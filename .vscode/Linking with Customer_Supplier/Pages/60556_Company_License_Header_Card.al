@@ -54,11 +54,11 @@ page 60556 "Company License Header Card"
                     ApplicationArea = all;//25jan
                                           // Caption = 'Company Name';//25jan
                 }
-                field("Company Posting Group"; Rec."Company Posting Group")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
+                // field("Company Posting Group"; Rec."Company Posting Group")
+                // {
+                //     ApplicationArea = All;
+                //     Editable = false;
+                // }
                 field("License No."; Rec."License No.")//25jan
                 {
                     ApplicationArea = all;//25jan

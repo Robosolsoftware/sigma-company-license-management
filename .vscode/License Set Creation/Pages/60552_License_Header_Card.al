@@ -47,16 +47,16 @@ page 60552 "License Header Card"
                 {
                     ApplicationArea = all;//25jan2020
                 }
-                field("Customer Posting Group"; Rec."Customer Posting Group")//25jan2020
-                {
-                    ApplicationArea = all;//25jan2020
-                    //Caption = 'Customer Posting Group';//25jan2020
-                }
-                //25jan++
-                field("Supplier Posting Group"; Rec."Supplier Posting Group")
-                {
-                    ApplicationArea = all;
-                }
+                // field("Customer Posting Group"; Rec."Customer Posting Group")//25jan2020
+                // {
+                //     ApplicationArea = all;//25jan2020
+                //     //Caption = 'Customer Posting Group';//25jan2020
+                // }
+                // //25jan++
+                // field("Supplier Posting Group"; Rec."Supplier Posting Group")
+                // {
+                //     ApplicationArea = all;
+                // }
                 //25jan--
                 //27jan++
                 field("Country Validation"; Rec."Country Validation")

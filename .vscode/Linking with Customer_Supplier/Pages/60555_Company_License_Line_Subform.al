@@ -81,11 +81,11 @@ page 60555 "Company License Line Subform"
                     ApplicationArea = all;//25jan
                     //Caption = 'Item Attribute Value';
                 }
-                field("Posting Group"; Rec."Posting Group")//25jan
-                {
-                    ApplicationArea = all;//25jan
-                                          //  Caption = 'Customer Posting Group';
-                }
+                // field("Posting Group"; Rec."Posting Group")//25jan
+                // {
+                //     ApplicationArea = all;//25jan
+                //                           //  Caption = 'Customer Posting Group';
+                // }
                 field("Shipping Country"; Rec."Shipping Country")//25jan
                 {
                     ApplicationArea = all;//25jan

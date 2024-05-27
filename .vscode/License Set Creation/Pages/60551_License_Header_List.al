@@ -33,15 +33,15 @@ page 60551 "License Header List"
                 {
                     ApplicationArea = all;//25jan
                 }
-                field("Customer Posting Group"; Rec."Customer Posting Group")
-                {
-                    ApplicationArea = all;//25jan
-                                          // Caption = 'Customer Posting Group';//25jan
-                }
-                field("Supplier Posting Group"; Rec."Supplier Posting Group")//25jan
-                {
-                    ApplicationArea = all;//25jan
-                }
+                // field("Customer Posting Group"; Rec."Customer Posting Group")
+                // {
+                //     ApplicationArea = all;//25jan
+                //                           // Caption = 'Customer Posting Group';//25jan
+                // }
+                // field("Supplier Posting Group"; Rec."Supplier Posting Group")//25jan
+                // {
+                //     ApplicationArea = all;//25jan
+                // }
                 field(Country; Rec.Country)
                 {
                     ApplicationArea = all;//25jan
