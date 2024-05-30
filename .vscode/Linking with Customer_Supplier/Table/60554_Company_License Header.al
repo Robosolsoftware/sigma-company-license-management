@@ -51,7 +51,7 @@ table 60554 "Company License Header"
             end;
 
         }
-        field(3; "Company Name"; Text[50])
+        field(3; "Company Name"; Text[100])
         {
             Editable = false;
         }
