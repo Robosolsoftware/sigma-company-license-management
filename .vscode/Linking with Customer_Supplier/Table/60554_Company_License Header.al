@@ -33,6 +33,8 @@ table 60554 "Company License Header"
                         Validate("Company Name", reccustomer.Name);
                         Validate("Post code", reccustomer."Post Code");
                         Validate("Company Posting Group", reccustomer."Customer Posting Group");
+                        Validate(Address, reccustomer.Address);
+                        Validate(Country, reccustomer."Country/Region Code");
                     end;
                 end else begin
                     recvendor.Reset();
@@ -41,12 +43,16 @@ table 60554 "Company License Header"
                         Validate("Company Name", recvendor.Name);
                         Validate("Post code", recvendor."Post Code");
                         Validate("Company Posting Group", recvendor."Vendor Posting Group");
+                        Validate(Address, recvendor.Address);
+                        Validate(Country, recvendor."Country/Region Code");
                     end;
                 end;
                 if Rec."Company No." = '' then begin
                     Rec."Company Name" := '';
                     Rec."Post code" := '';
                     Rec."Company Posting Group" := '';
+                    Rec.Address := '';
+                    Rec.Country := '';
                 end;
             end;
 
