@@ -27,7 +27,7 @@ codeunit 60551 "Check Item License"
 
     EventSubscriberInstance = StaticAutomatic;
     [EventSubscriber(ObjectType::Table, 37, 'OnBeforeValidateEvent', 'No.', true, true)]
-    local procedure CheckingLicenseSales(var Rec: Record "Sales Line")
+    local procedure CheckingLicenseSales(var Rec: Record "Sales Line"; CurrFieldNo: Integer)
     var
         RecSalesHeader: Record "Sales Header";
         RecItem: Record Item;
@@ -35,7 +35,8 @@ codeunit 60551 "Check Item License"
         //!!!!!!!
         //Important Note:- If you making any changes in Company License so please make same changes in function ForIntegration_ValidateLicense of sames codunit.
         //!!!!!!!
-
+        if CurrFieldNo <> 6 then
+            exit;
         if Rec.Type = Rec.Type::Item then begin
             //to get post code and custpostgrp
             RecSalesHeader.Reset();
