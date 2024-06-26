@@ -64,17 +64,17 @@ page 60556 "Company License Header Card"
                     ApplicationArea = all;//25jan
                                           //Caption = 'License No.';//25jan
 
-                    //19feb++
-                    trigger OnValidate()
-                    var
-                    begin
-                        if xRec."License No." <> '' then begin
-                            if xRec."License No." <> Rec."License No." then begin
-                                Error('License No. Modifying not allowed');
-                            end;
-                        end;
-                    end;
-                    //19feb--
+                    // //19feb++
+                    // trigger OnValidate()
+                    // var
+                    // begin
+                    //     if xRec."License No." <> '' then begin
+                    //         if xRec."License No." <> Rec."License No." then begin
+                    //             Error('License No. Modifying not allowed');
+                    //         end;
+                    //     end;
+                    // end;
+                    // //19feb--
 
                 }
                 field("License Code"; Rec."License Code")//25jan

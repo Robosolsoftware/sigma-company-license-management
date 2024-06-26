@@ -66,9 +66,26 @@ table 60554 "Company License Header"
             //2feb 2021 ++
             trigger OnValidate()
             var
+                reccomplicenseline: Record "Company License Line";
             begin
                 if Rec."License No." = '' then
                     Message('Alert!!License No. required');
+
+
+                if xRec."License No." <> '' then begin
+                    if xRec."License No." <> Rec."License No." then begin
+                        reccomplicenseline.Reset();
+                        reccomplicenseline.SetRange("Company Type", Rec."Company Type");
+                        reccomplicenseline.SetRange("Company No.", Rec."Company No.");
+                        reccomplicenseline.SetRange("License Code", Rec."License Code");
+                        reccomplicenseline.SetRange("License No.", xRec."License No.");
+                        if reccomplicenseline.FindSet() then begin
+                            repeat
+                                reccomplicenseline.Rename(reccomplicenseline."Company Type", reccomplicenseline."Company No.", Rec."License No.", reccomplicenseline."License Code", reccomplicenseline."Line No.")
+                            until reccomplicenseline.Next() = 0;
+                        end;
+                    end;
+                end;
             end;
             //2feb 2021 --
 
