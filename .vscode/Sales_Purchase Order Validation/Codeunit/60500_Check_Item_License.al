@@ -445,6 +445,10 @@ codeunit 60551 "Check Item License"
         ConfirmManagement: Codeunit "Confirm Management";
     begin
         ReccomplicensLine.Reset();
+        if CalledFrom = CalledFrom::Purchase then
+            ReccomplicensLine.SetRange("Company Type", ReccomplicensLine."Company Type"::Supplier)
+        else
+            ReccomplicensLine.SetRange("Company Type", ReccomplicensLine."Company Type"::Customer);
         ReccomplicensLine.SetRange("Company No.", CompanyNo);
         ReccomplicensLine.SetRange("Item Category", ItemCatCode);
         ReccomplicensLine.SetRange("Item Attribute ID", ItemAttrId);
