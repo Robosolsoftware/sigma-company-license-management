@@ -209,15 +209,17 @@ page 60556 "Company License Header Card"
                         Error('Please Select Licese No.');//2feb 2020
                     if Rec."License Code" = '' then//2feb 2020
                         Error('Please Select Licese Code.');//2feb 2020
-                    RecVETMedi.Reset();
-                    RecVETMedi.SetRange("Company Type", Rec."Company Type");
-                    RecVETMedi.SetRange("Company No.", Rec."Company No.");
-                    RecVETMedi.SetRange("License No.", Rec."License No.");
-                    RecVETMedi.SetRange("License Code", Rec."License Code");
-                    IF RecVETMedi.FindFirst() THEN begin
-                        RecVETMedi.Status := RecVETMedi.Status::Release;
-                        RecVETMedi.MODIFY;
-                    END;
+                    Rec.Status := Rec.Status::Release;
+                    Rec.MODIFY;
+                    // RecVETMedi.Reset();
+                    // RecVETMedi.SetRange("Company Type", Rec."Company Type");
+                    // RecVETMedi.SetRange("Company No.", Rec."Company No.");
+                    // RecVETMedi.SetRange("License No.", Rec."License No.");
+                    // RecVETMedi.SetRange("License Code", Rec."License Code");
+                    // IF RecVETMedi.FindFirst() THEN begin
+                    //     RecVETMedi.Status := RecVETMedi.Status::Release;
+                    //     RecVETMedi.MODIFY;
+                    // END;
                     //CurrPage.Update(true);
 
                 end;
