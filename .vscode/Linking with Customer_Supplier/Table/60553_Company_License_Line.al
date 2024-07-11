@@ -285,7 +285,7 @@ table 60553 "Company License Line"
         }
 
         //7jan2021++
-        field(16; "Company Name"; Text[50])
+        field(16; "Company Name"; Text[100])
         {
             Editable = false;
             FieldClass = FlowField;

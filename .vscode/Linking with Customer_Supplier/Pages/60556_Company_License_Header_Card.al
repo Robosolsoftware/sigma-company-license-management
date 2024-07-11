@@ -141,6 +141,15 @@ page 60556 "Company License Header Card"
                 {
                     ApplicationArea = all;//25jan
                 }
+                field("Verification Date"; Rec."Verification Date")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shortcut Dimension 3 Code"; Rec."Shortcut Dimension 3 Code")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
 
 
             }
@@ -182,17 +191,20 @@ page 60556 "Company License Header Card"
                 //PromotedCategory = Category5;
                 trigger OnAction()
                 begin
-                    CLEAR(RecVETMedi);
-                    RecVETMedi.Reset();
-                    RecVETMedi.SetRange("Company Type", Rec."Company Type");
-                    RecVETMedi.SetRange("Company No.", Rec."Company No.");
-                    RecVETMedi.SetRange("License No.", Rec."License No.");
-                    RecVETMedi.SetRange("License Code", Rec."License Code");
-                    IF RecVETMedi.FindFirst() THEN BEGIN
-                        //IF (RecVETMedi.Status<>RecVETMedi.Status::Open )THEN BEGIN
-                        RecVETMedi.Status := RecVETMedi.Status::Open;
-                        RecVETMedi.MODIFY;
-                    END;
+                    // CLEAR(RecVETMedi);
+                    // RecVETMedi.Reset();
+                    // RecVETMedi.SetRange("Company Type", Rec."Company Type");
+                    // RecVETMedi.SetRange("Company No.", Rec."Company No.");
+                    // RecVETMedi.SetRange("License No.", Rec."License No.");
+                    // RecVETMedi.SetRange("License Code", Rec."License Code");
+                    // IF RecVETMedi.FindFirst() THEN BEGIN
+                    //     //IF (RecVETMedi.Status<>RecVETMedi.Status::Open )THEN BEGIN
+                    //     RecVETMedi.Status := RecVETMedi.Status::Open;
+                    //     RecVETMedi.MODIFY;
+                    // END;
+
+                    Rec.Status := Rec.Status::Open;
+                    Rec.MODIFY;
                 end;
             }
             action(Release)

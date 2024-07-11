@@ -25,8 +25,6 @@ table 60554 "Company License Header"
                 recvendor: Record Vendor;
             begin
                 if Rec."Company Type" = Rec."Company Type"::Customer then begin
-
-
                     reccustomer.Reset();
                     reccustomer.SetRange("No.", "Company No.");
                     if reccustomer.FindFirst() then begin
@@ -47,6 +45,8 @@ table 60554 "Company License Header"
                         Validate(Country, recvendor."Country/Region Code");
                     end;
                 end;
+
+
                 if Rec."Company No." = '' then begin
                     Rec."Company Name" := '';
                     Rec."Post code" := '';
@@ -299,6 +299,15 @@ table 60554 "Company License Header"
             TableRelation = if ("Company Type" = const(Customer)) "Customer Posting Group".Code else
             if ("Company Type" = const(Supplier)) "Vendor Posting Group".Code;
             Editable = false;
+        }
+        field(17; "Verification Date"; Date)
+        {
+
+        }
+        field(18; "Shortcut Dimension 3 Code"; Code[50])
+        {
+            Caption = 'Shortcut Dimension 3 Code';
+            CaptionClass = '18,83';
         }
     }
 

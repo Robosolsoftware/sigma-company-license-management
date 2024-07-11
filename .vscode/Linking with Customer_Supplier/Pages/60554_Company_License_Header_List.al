@@ -86,6 +86,16 @@ page 60554 "Company License Header List"
                 {
                     ApplicationArea = all;//25jan
                 }
+                field("Verification Date"; Rec."Verification Date")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Shortcut Dimension 3 Code"; Rec."Shortcut Dimension 3 Code")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
             }
         }
         area(factboxes)
