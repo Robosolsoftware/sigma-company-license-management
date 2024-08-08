@@ -30,6 +30,12 @@ page 60554 "Company License Header List"
                     ApplicationArea = all;//25jan
                     //Caption = 'Company Name';//25jan
                 }
+                field(Type; Rec.Type)
+                {
+                    ApplicationArea = all;
+                    Editable = false;
+
+                }
                 field("License No."; Rec."License No.")//25jan
                 {
                     ApplicationArea = all;//25jan

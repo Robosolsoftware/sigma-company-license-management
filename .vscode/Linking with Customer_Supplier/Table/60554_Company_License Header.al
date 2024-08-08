@@ -309,6 +309,12 @@ table 60554 "Company License Header"
             Caption = 'Shortcut Dimension 3 Code';
             CaptionClass = '18,83';
         }
+        field(19; Type; Option)
+        {
+            OptionMembers = Main,Site,"Main/Site";
+            FieldClass = FlowField;
+            CalcFormula = lookup(Customer.Type where("No." = field("Company No.")));
+        }
     }
 
     keys
