@@ -374,6 +374,8 @@ codeunit 60551 "Check Item License"
         ReccomplicensLine: Record "Company License Line";
         RecLicenseLine: Record "License Line";
         ConfirmManagement: Codeunit "Confirm Management";
+        ItemAttributeValue: Record "Item Attribute Value";
+        L_ItemAttributeName: Text[100];
     begin
         ReccomplicensLine.Reset();
         ReccomplicensLine.SetRange("Company No.", CompanyNo);
@@ -413,6 +415,16 @@ codeunit 60551 "Check Item License"
         end;
 
         //New Code Added 09262021+++
+        //New Code Added 09262021+++
+        Clear(L_ItemAttributeName);
+        ItemAttributeValue.Reset();
+        ItemAttributeValue.SetRange("Attribute ID", ItemAttrId);
+        ItemAttributeValue.SetRange(ID, ItemAttrValueId);
+        if ItemAttributeValue.FindFirst() then begin
+            ItemAttributeValue.CalcFields("Attribute Name");
+            L_ItemAttributeName := ItemAttributeValue."Attribute Name";
+        end;
+
         Clear(_ErrorMessage);
         if CompanyLicenseFound = false then begin
             RecLicenseLine.Reset();
@@ -420,7 +432,7 @@ codeunit 60551 "Check Item License"
             if RecLicenseLine.FindFirst() then begin
                 RecLicenseLine.CalcFields("Warning Text", "Warning Type");
                 if RecLicenseLine."Warning Type" = RecLicenseLine."Warning Type"::Error then begin
-                    _ErrorMessage := StrSubstNo('%1 for Item No.: %2 and Item Attribute: %3', RecLicenseLine."Warning Text", ItemCode, AttributeValue);
+                    _ErrorMessage := StrSubstNo('%1 for Item No.: %2, Item Attribute: %3, and Item Attribute Value: %4', RecLicenseLine."Warning Text", ItemCode, L_ItemAttributeName, AttributeValue);
                 end;
                 // if RecLicenseLine."Warning Type" = RecLicenseLine."Warning Type"::Warning then begin
                 //     if not ConfirmManagement.GetResponseOrDefault(StrSubstNo('%1 for Item No.: %2 and Item Attribute: %3', RecLicenseLine."Warning Text", ItemCode, AttributeValue), true) then begin
@@ -443,6 +455,8 @@ codeunit 60551 "Check Item License"
         ReccomplicensLine: Record "Company License Line";
         RecLicenseLine: Record "License Line";
         ConfirmManagement: Codeunit "Confirm Management";
+        ItemAttributeValue: Record "Item Attribute Value";
+        L_ItemAttributeName: Text[100];
     begin
         ReccomplicensLine.Reset();
         if CalledFrom = CalledFrom::Purchase then
@@ -486,16 +500,25 @@ codeunit 60551 "Check Item License"
         end;
 
         //New Code Added 09262021+++
+        Clear(L_ItemAttributeName);
+        ItemAttributeValue.Reset();
+        ItemAttributeValue.SetRange("Attribute ID", ItemAttrId);
+        ItemAttributeValue.SetRange(ID, ItemAttrValueId);
+        if ItemAttributeValue.FindFirst() then begin
+            ItemAttributeValue.CalcFields("Attribute Name");
+            L_ItemAttributeName := ItemAttributeValue."Attribute Name";
+        end;
+
         if CompanyLicenseFound = false then begin
             RecLicenseLine.Reset();
             RecLicenseLine.SetRange("License Code", LicenseCode);
             if RecLicenseLine.FindFirst() then begin
                 RecLicenseLine.CalcFields("Warning Text", "Warning Type");
                 if RecLicenseLine."Warning Type" = RecLicenseLine."Warning Type"::Error then begin
-                    Error('%1 for Item No.: %2 and Item Attribute: %3', RecLicenseLine."Warning Text", ItemCode, AttributeValue);
+                    Error('%1 for Item No.: %2, Item Attribute: %3, and Item Attribute Value: %4', RecLicenseLine."Warning Text", ItemCode, L_ItemAttributeName, AttributeValue);
                 end;
                 if RecLicenseLine."Warning Type" = RecLicenseLine."Warning Type"::Warning then begin
-                    if not ConfirmManagement.GetResponseOrDefault(StrSubstNo('%1 for Item No.: %2 and Item Attribute: %3', RecLicenseLine."Warning Text", ItemCode, AttributeValue), true) then begin
+                    if not ConfirmManagement.GetResponseOrDefault(StrSubstNo('%1 for Item No.: %2, Item Attribute: %3, and Item Attribute Value: %4', RecLicenseLine."Warning Text", ItemCode, L_ItemAttributeName, AttributeValue), true) then begin
                         Error('Process Stopped Please Revert Changes');
                     end else begin
                     end;
