@@ -369,7 +369,7 @@ codeunit 60551 "Check Item License"
         end;
     end;
 
-    local procedure ForIntegration_ValidateCompanyLicense(CalledFrom: Option "Sales","Purchase"; CompanyNo: code[20]; ItemCatCode: Code[20]; ItemAttrId: Integer; ItemAttrValueId: Integer; LicenseCode: Code[100]; PostingGroup: Code[20]; shippingCountry: Text[30]; OrderDate: Date; countryvalidation: Boolean; PostCode: code[20]; ItemCode: Code[20]; AttributeValue: Text[500]; LicenseSetPostingGroup: Code[20]) _ErrorMessage: Text[100]
+    local procedure ForIntegration_ValidateCompanyLicense(CalledFrom: Option "Sales","Purchase"; CompanyNo: code[20]; ItemCatCode: Code[20]; ItemAttrId: Integer; ItemAttrValueId: Integer; LicenseCode: Code[100]; PostingGroup: Code[20]; shippingCountry: Text[30]; OrderDate: Date; countryvalidation: Boolean; PostCode: code[20]; ItemCode: Code[20]; AttributeValue: Text[500]; LicenseSetPostingGroup: Code[20]) _ErrorMessage: Text[200]
     var
         ReccomplicensLine: Record "Company License Line";
         RecLicenseLine: Record "License Line";
