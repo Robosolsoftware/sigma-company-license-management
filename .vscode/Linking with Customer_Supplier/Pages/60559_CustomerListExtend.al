@@ -4,18 +4,18 @@ pageextension 60559 "Customer List Extend" extends "Customer List"
     {
         // Add changes to page layout here
         //Rehan(Company_Lic_expired_cust)
-        modify("No.")
-        {
-            StyleExpr = Color;
-        }
-        modify(Name)
-        {
-            StyleExpr = Color;
-        }
-        modify("Phone No.")
-        {
-            StyleExpr = Color;
-        }
+        // modify("No.")
+        // {
+        //     StyleExpr = Color;
+        // }
+        // modify(Name)
+        // {
+        //     StyleExpr = Color;
+        // }
+        // modify("Phone No.")
+        // {
+        //     StyleExpr = Color;
+        // }
     }
 
     actions
