@@ -293,6 +293,13 @@ table 60553 "Company License Line"
         }
         //7jan2021--
 
+        field(17; "Ship-to code"; Code[20])
+        {
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = lookup("Company License Header"."Ship-to-Code" where("Company No." = field("Company No."), "Company Type" = field("Company Type"), "License No." = field("License No."), "License Code" = field("License Code")));
+        }
+
     }
 
     keys

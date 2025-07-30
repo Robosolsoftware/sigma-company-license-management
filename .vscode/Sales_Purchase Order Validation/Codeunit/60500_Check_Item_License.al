@@ -43,7 +43,7 @@ codeunit 60551 "Check Item License"
             RecSalesHeader.SetRange("No.", Rec."Document No.");
             RecSalesHeader.SetFilter("Document Type", '%1|%2', RecSalesHeader."Document Type"::Order, RecSalesHeader."Document Type"::Quote);
             if RecSalesHeader.FindFirst() then
-                ValidateLicense(0, RecSalesHeader."Sell-to Customer No.", RecSalesHeader."Customer Posting Group", RecSalesHeader."Ship-to Country/Region Code", RecSalesHeader."Order Date", Rec."No.", RecSalesHeader."Ship-to Post Code")
+                ValidateLicense(0, RecSalesHeader."Sell-to Customer No.", RecSalesHeader."Customer Posting Group", RecSalesHeader."Ship-to Country/Region Code", RecSalesHeader."Order Date", Rec."No.", RecSalesHeader."Ship-to Post Code", '')
             // else
             //     Error('Sales Header not found for Line %1', Rec.RecordId);
         end;
@@ -62,13 +62,13 @@ codeunit 60551 "Check Item License"
             RecPurchHeader.SetRange("No.", Rec."Document No.");
             RecPurchHeader.SetFilter("Document Type", '%1|%2', RecPurchHeader."Document Type"::Order, RecPurchHeader."Document Type"::Quote);
             if RecPurchHeader.FindFirst() then
-                ValidateLicense(1, RecPurchHeader."Buy-from Vendor No.", RecPurchHeader."Vendor Posting Group", RecPurchHeader."Buy-from Country/Region Code", RecPurchHeader."Order Date", Rec."No.", RecPurchHeader."Buy-from Post Code")
+                ValidateLicense(1, RecPurchHeader."Buy-from Vendor No.", RecPurchHeader."Vendor Posting Group", RecPurchHeader."Buy-from Country/Region Code", RecPurchHeader."Order Date", Rec."No.", RecPurchHeader."Buy-from Post Code", RecPurchHeader."Order Address Code")
             // else
             //     Error('Purchase Header not found for Line %1', Rec.RecordId);
         end;
     end;
 
-    procedure ValidateLicense(CalledFrom: Option "Sales","Purchase"; CompanyNo: code[20]; PostingGroup: Code[20]; shippingCountry: Text[30]; OrderDate: Date; ItemNo: Code[20]; PostCode: code[20])
+    procedure ValidateLicense(CalledFrom: Option "Sales","Purchase"; CompanyNo: code[20]; PostingGroup: Code[20]; shippingCountry: Text[30]; OrderDate: Date; ItemNo: Code[20]; PostCode: code[20]; _AlternateVendorAddress: Code[20])
     var
         ConfirmManagement: Codeunit "Confirm Management";
         RecLicenceHeader: Record "License Header";
@@ -84,10 +84,15 @@ codeunit 60551 "Check Item License"
         ItemAttributeValue: Record "Item Attribute Value";
         ItemAttribute: Record "Item Attribute";
         tes: Codeunit "Whse.-Activity-Post";
+        L_AlternateVendorAddress: Code[20];
     begin
         RecItem.Reset();
         RecItem.SetRange("No.", ItemNo);
         if RecItem.FindFirst() then;
+
+        Clear(L_AlternateVendorAddress);
+        if _AlternateVendorAddress <> '' then
+            L_AlternateVendorAddress := _AlternateVendorAddress;
 
         // To get attibute details
         RecItemAttValMap.Reset();
@@ -159,7 +164,7 @@ codeunit 60551 "Check Item License"
                                         if (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Both) or (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Purchase) then begin
                                             licenseCopulsary := true;
                                             //ValidateCompanyLicense(CalledFrom, CompanyNo, RecItem."Item Category Code", RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, true, PostCode);
-                                            ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, true, PostCode, ItemNo, AttributeValue, RecLicenseLine."Supplier Posting Group");
+                                            ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, true, PostCode, ItemNo, AttributeValue, RecLicenseLine."Supplier Posting Group", L_AlternateVendorAddress);
                                         end;
                                     end;
                                 end Else Begin
@@ -167,7 +172,7 @@ codeunit 60551 "Check Item License"
                                         if (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Both) or (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Purchase) then begin
                                             licenseCopulsary := true;
                                             //ValidateCompanyLicense(CalledFrom, CompanyNo, RecItem."Item Category Code", RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, false, PostCode);
-                                            ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, false, PostCode, ItemNo, AttributeValue, RecLicenseLine."Supplier Posting Group");
+                                            ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, false, PostCode, ItemNo, AttributeValue, RecLicenseLine."Supplier Posting Group", L_AlternateVendorAddress);
                                         end;
                                     end;
                                 End;
@@ -177,7 +182,7 @@ codeunit 60551 "Check Item License"
                                         if (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Both) or (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Sales) then begin
                                             licenseCopulsary := true;
                                             //ValidateCompanyLicense(CalledFrom, CompanyNo, RecItem."Item Category Code", RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, true, PostCode);
-                                            ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, true, PostCode, ItemNo, AttributeValue, RecLicenseLine."Customer Posting Group");
+                                            ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, true, PostCode, ItemNo, AttributeValue, RecLicenseLine."Customer Posting Group", L_AlternateVendorAddress);
                                         end;
                                     end;
                                 end Else Begin
@@ -185,7 +190,7 @@ codeunit 60551 "Check Item License"
                                         if (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Both) or (RecLicenseLine."Apply To" = RecLicenseLine."Apply To"::Sales) then begin
                                             licenseCopulsary := true;
                                             //ValidateCompanyLicense(CalledFrom, CompanyNo, RecItem."Item Category Code", RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, false, PostCode);
-                                            ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, false, PostCode, ItemNo, AttributeValue, RecLicenseLine."Customer Posting Group");
+                                            ValidateCompanyLicense(CalledFrom, CompanyNo, FindCategory, RecItemAttValMap."Item Attribute ID", RecItemAttValMap."Item Attribute Value ID", RecLicenseLine."License Code", PostingGroup, shippingCountry, OrderDate, false, PostCode, ItemNo, AttributeValue, RecLicenseLine."Customer Posting Group", L_AlternateVendorAddress);
                                         end;
                                     end;
                                 End;
@@ -450,7 +455,7 @@ codeunit 60551 "Check Item License"
 
 
 
-    local procedure ValidateCompanyLicense(CalledFrom: Option "Sales","Purchase"; CompanyNo: code[20]; ItemCatCode: Code[20]; ItemAttrId: Integer; ItemAttrValueId: Integer; LicenseCode: Code[100]; PostingGroup: Code[20]; shippingCountry: Text[30]; OrderDate: Date; countryvalidation: Boolean; PostCode: code[20]; ItemCode: Code[20]; AttributeValue: Text[500]; LicenseSetPostingGroup: Code[20])
+    local procedure ValidateCompanyLicense(CalledFrom: Option "Sales","Purchase"; CompanyNo: code[20]; ItemCatCode: Code[20]; ItemAttrId: Integer; ItemAttrValueId: Integer; LicenseCode: Code[100]; PostingGroup: Code[20]; shippingCountry: Text[30]; OrderDate: Date; countryvalidation: Boolean; PostCode: code[20]; ItemCode: Code[20]; AttributeValue: Text[500]; LicenseSetPostingGroup: Code[20]; _AlternateVendorAddress: Code[20])
     var
         ReccomplicensLine: Record "Company License Line";
         RecLicenseLine: Record "License Line";
@@ -459,20 +464,20 @@ codeunit 60551 "Check Item License"
         L_ItemAttributeName: Text[100];
     begin
         ReccomplicensLine.Reset();
-        if CalledFrom = CalledFrom::Purchase then
-            ReccomplicensLine.SetRange("Company Type", ReccomplicensLine."Company Type"::Supplier)
-        else
+        if CalledFrom = CalledFrom::Purchase then begin
+            ReccomplicensLine.SetRange("Company Type", ReccomplicensLine."Company Type"::Supplier);
+            ReccomplicensLine.CalcFields("Ship-to code");
+            ReccomplicensLine.SetRange("Ship-to code", _AlternateVendorAddress);
+        end else
             ReccomplicensLine.SetRange("Company Type", ReccomplicensLine."Company Type"::Customer);
         ReccomplicensLine.SetRange("Company No.", CompanyNo);
         ReccomplicensLine.SetRange("Item Category", ItemCatCode);
         ReccomplicensLine.SetRange("Item Attribute ID", ItemAttrId);
         ReccomplicensLine.SetRange("Item Attribute Value ID", ItemAttrValueId);
         //ReccomplicensLine.SetRange("License Code", LicenseCode);
-
         //LicenseSetPostingGroup:- If it is blank it means it will work for all posting group++
         if LicenseSetPostingGroup <> '' then
             ReccomplicensLine.SetRange("Posting Group", PostingGroup);
-
         ReccomplicensLine.CalcFields("Post code");
         if PostCode <> '' then
             ReccomplicensLine.SetRange("Post code", PostCode);

@@ -15,5 +15,6 @@ permissionset 60551 CompanyLicense
         page "Company License Line Subform" = X,
         page "License Header Card" = X,
         page "License Header List" = X,
-        page "License Line Subform" = X;
+        page "License Line Subform" = X,
+        codeunit "Manage Dimension On License" = X;
 }
