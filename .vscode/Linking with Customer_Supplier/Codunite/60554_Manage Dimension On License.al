@@ -55,4 +55,21 @@ codeunit 60554 "Manage Dimension On License"
         end;
     end;
 
+
+    //Modify Dimension on Company License Header when Dimension code is changed in cutomer master+++
+    [EventSubscriber(ObjectType::Table, Database::"Default Dimension", OnAfterValidateEvent, 'Dimension Value Code', false, false)]
+    local procedure DimensionValue_OnAfterValidateEvent(var Rec: Record "Default Dimension")
+    var
+        L_CompanyLicenseHeader: Record "Company License Header";
+    begin
+        if UpperCase(Rec."Dimension Code") <> UpperCase('CUSTOMER TYPE') then
+            exit;
+
+        L_CompanyLicenseHeader.Reset();
+        L_CompanyLicenseHeader.SetRange("Company Type", L_CompanyLicenseHeader."Company Type"::Customer);
+        L_CompanyLicenseHeader.SetRange("Company No.", Rec."No.");
+        if L_CompanyLicenseHeader.FindSet() then
+            L_CompanyLicenseHeader.ModifyAll("Shortcut Dimension 3 Code", Rec."Dimension Value Code");
+    end;
+
 }

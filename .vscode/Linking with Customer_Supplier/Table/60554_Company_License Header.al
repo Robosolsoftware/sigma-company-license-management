@@ -315,6 +315,21 @@ table 60554 "Company License Header"
             FieldClass = FlowField;
             CalcFormula = lookup(Customer.Type where("No." = field("Company No.")));
         }
+        field(20; "QAU Approved"; Boolean)
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup(Customer."QAU Approved" where("No." = field("Company No.")));
+        }
+        field(21; Blocked; Enum "Customer Blocked")
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup(Customer.Blocked where("No." = field("Company No.")));
+        }
+        field(22; "Blocked Reason"; Code[20])
+        {
+            FieldClass = FlowField;
+            CalcFormula = lookup(Customer."Block Reason" where("No." = field("Company No.")));
+        }
     }
 
     keys

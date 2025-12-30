@@ -102,6 +102,24 @@ page 60554 "Company License Header List"
                     ApplicationArea = All;
                     Editable = false;
                 }
+                field("QAU Approved"; Rec."QAU Approved")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+
+                }
+                field(Blocked; Rec.Blocked)
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+
+                }
+                field("Blocked Reason"; Rec."Blocked Reason")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+
+                }
             }
         }
         area(factboxes)
