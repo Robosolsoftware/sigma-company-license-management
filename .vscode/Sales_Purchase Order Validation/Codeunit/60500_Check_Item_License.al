@@ -35,19 +35,42 @@ codeunit 60551 "Check Item License"
         //!!!!!!!
         //Important Note:- If you making any changes in Company License so please make same changes in function ForIntegration_ValidateLicense of sames codunit.
         //!!!!!!!
-        if CurrFieldNo <> 6 then
+        // if CurrFieldNo <> 6 then
+        //     exit;
+        if (CurrFieldNo = 6) or (CurrFieldNo = 11) then begin
+            if Rec.Type = Rec.Type::Item then begin
+                //to get post code and custpostgrp
+                RecSalesHeader.Reset();
+                RecSalesHeader.SetRange("No.", Rec."Document No.");
+                RecSalesHeader.SetFilter("Document Type", '%1|%2', RecSalesHeader."Document Type"::Order, RecSalesHeader."Document Type"::Quote);
+                if RecSalesHeader.FindFirst() then
+                    ValidateLicense(0, RecSalesHeader."Sell-to Customer No.", RecSalesHeader."Customer Posting Group", RecSalesHeader."Ship-to Country/Region Code", RecSalesHeader."Order Date", Rec."No.", RecSalesHeader."Ship-to Post Code", '')
+                // else
+                //     Error('Sales Header not found for Line %1', Rec.RecordId);
+            end;
+        end else
             exit;
-        if Rec.Type = Rec.Type::Item then begin
-            //to get post code and custpostgrp
+    end;
+
+    //[EventSubscriber(ObjectType::Page, Page::"Sales Order Subform", 'OnReferenceNoOnAfterLookup', '', true, true)]
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Item Reference Management", 'OnAfterValidateSalesReferenceNo', '', true, true)]
+    local procedure OnAfterValidateSalesReferenceNo(var SalesLine: Record "Sales Line")
+    var
+        RecSalesHeader: Record "Sales Header";
+        RecItem: Record Item;
+    begin
+        //!!!!!!!
+        //Important Note:- If you making any changes in Company License so please make same changes in function ForIntegration_ValidateLicense of sames codunit.
+        //!!!!!!!
+        if SalesLine.Type = SalesLine.Type::Item then begin
             RecSalesHeader.Reset();
-            RecSalesHeader.SetRange("No.", Rec."Document No.");
+            RecSalesHeader.SetRange("No.", SalesLine."Document No.");
             RecSalesHeader.SetFilter("Document Type", '%1|%2', RecSalesHeader."Document Type"::Order, RecSalesHeader."Document Type"::Quote);
             if RecSalesHeader.FindFirst() then
-                ValidateLicense(0, RecSalesHeader."Sell-to Customer No.", RecSalesHeader."Customer Posting Group", RecSalesHeader."Ship-to Country/Region Code", RecSalesHeader."Order Date", Rec."No.", RecSalesHeader."Ship-to Post Code", '')
-            // else
-            //     Error('Sales Header not found for Line %1', Rec.RecordId);
+                ValidateLicense(0, RecSalesHeader."Sell-to Customer No.", RecSalesHeader."Customer Posting Group", RecSalesHeader."Ship-to Country/Region Code", RecSalesHeader."Order Date", SalesLine."No.", RecSalesHeader."Ship-to Post Code", '')
         end;
     end;
+
 
     [EventSubscriber(ObjectType::Table, 39, 'OnBeforeValidateEvent', 'No.', true, true)]
     local procedure CheckingLicensePurh(var Rec: Record "Purchase Line")
