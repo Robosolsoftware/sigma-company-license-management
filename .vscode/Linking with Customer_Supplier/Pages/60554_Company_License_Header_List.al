@@ -120,6 +120,16 @@ page 60554 "Company License Header List"
                     Editable = false;
 
                 }
+                field(Synced; rec.Synced)
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Verified By"; rec."Verified By")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
             }
         }
         area(factboxes)

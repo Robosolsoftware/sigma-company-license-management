@@ -150,7 +150,16 @@ page 60556 "Company License Header Card"
                     ApplicationArea = All;
                     Editable = false;
                 }
-
+                field(Synced; rec.Synced)
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Verified By"; rec."Verified By")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
 
             }
             part("Company License Line"; "Company License Line Subform")

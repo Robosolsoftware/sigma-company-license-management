@@ -67,6 +67,7 @@ table 60554 "Company License Header"
             trigger OnValidate()
             var
                 reccomplicenseline: Record "Company License Line";
+                reccomplicenseline1: Record "Company License Line";
             begin
                 if Rec."License No." = '' then
                     Message('Alert!!License No. required');
@@ -81,7 +82,15 @@ table 60554 "Company License Header"
                         reccomplicenseline.SetRange("License No.", xRec."License No.");
                         if reccomplicenseline.FindSet() then begin
                             repeat
-                                reccomplicenseline.Rename(reccomplicenseline."Company Type", reccomplicenseline."Company No.", Rec."License No.", reccomplicenseline."License Code", reccomplicenseline."Line No.")
+                                reccomplicenseline1.Reset();
+                                reccomplicenseline1.SetRange("Company Type", reccomplicenseline."Company Type");
+                                reccomplicenseline1.SetRange("Company No.", reccomplicenseline."Company No.");
+                                reccomplicenseline1.SetRange("License Code", reccomplicenseline."License Code");
+                                reccomplicenseline1.SetRange("License No.", reccomplicenseline."License No.");
+                                reccomplicenseline1.SetRange("Line No.", reccomplicenseline."Line No.");
+                                if reccomplicenseline1.FindFirst() then begin
+                                    reccomplicenseline1.Rename(reccomplicenseline1."Company Type", reccomplicenseline1."Company No.", Rec."License No.", reccomplicenseline1."License Code", reccomplicenseline1."Line No.")
+                                end;
                             until reccomplicenseline.Next() = 0;
                         end;
                     end;
@@ -329,6 +338,15 @@ table 60554 "Company License Header"
         {
             FieldClass = FlowField;
             CalcFormula = lookup(Customer."Block Reason" where("No." = field("Company No.")));
+        }
+
+        field(23; "Synced"; Boolean)
+        {
+
+        }
+        field(24; "Verified By"; Text[50])
+        {
+
         }
     }
 
