@@ -246,6 +246,46 @@ page 60556 "Company License Header Card"
                 end;
             }
             //discussion 23dec2020--
+            action(OpenSyncLog)
+            {
+                Caption = 'Sync Log';
+                ApplicationArea = All;
+                Image = Log;
+                ToolTip = 'View the full change log for this licence.';
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = false;
+
+                trigger OnAction()
+                var
+                    LogEntry: Record "License Sync Log";
+                    LogPage: Page "License Sync Log";
+                begin
+                    LogEntry.SetRange("License No.", Rec."License No.");
+                    LogPage.SetTableView(LogEntry);
+                    LogPage.RunModal();
+                end;
+            }
+            action("Change Log")
+            {
+                ApplicationArea = All;
+                Image = ChangeLog;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = false;
+
+                trigger OnAction()
+                var
+                    ChangeLog: Record "Change Log Entry";
+                begin
+                    ChangeLog.SetFilter("Table No.", '%1|%2', 60554, 60553); //Company license header table
+
+                    ChangeLog.SetRange("Primary Key Field 1 Value", '1'); // PK in 60554 are key(PK; "Company Type", "Company No.", "Ship-to-Code", "License No.", "License Code")
+                    ChangeLog.SetRange("Primary Key Field 2 Value", Rec."Company No.");
+
+                    PAGE.Run(PAGE::"Change Log Entries", ChangeLog);
+                end;
+            }
         }
     }
     //discussion 23dec2020++
