@@ -16,5 +16,9 @@ permissionset 60551 CompanyLicense
         page "License Header Card" = X,
         page "License Header List" = X,
         page "License Line Subform" = X,
-        codeunit "Manage Dimension On License" = X;
+        codeunit "Manage Dimension On License" = X,
+        tabledata "License Sync Log" = RIMD,
+        table "License Sync Log" = X,
+        page Company_License_TraxQM_API = X,
+        page "License Sync Log" = X;
 }

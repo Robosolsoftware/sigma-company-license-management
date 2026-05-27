@@ -162,6 +162,60 @@ page 60554 "Company License Header List"
 
                 end;
             }
+            action("Update GPHC License No.")
+            {
+                ApplicationArea = All;
+                trigger OnAction();
+                var
+                    companyLicHdr: Record "Company License Header";
+                    reccomplicenseline1: Record "Company License Line";
+                    reccomplicenseline: Record "Company License Line";
+                    companyLicLine: Record "Company License Line";
+                    IsBlank: Text[5];
+                    OldLicenseNo: Code[20];
+                    NewLicenseNo: Code[20];
+                begin
+                    companyLicHdr.Reset();
+                    CurrPage.SetSelectionFilter(companyLicHdr);
+                    companyLicHdr.SetRange("License Code", 'GPHC');
+                    companyLicHdr.SetRange("Company Type", companyLicHdr."Company Type"::Customer);
+                    if companyLicHdr.FindSet() then begin
+                        repeat
+                            Clear(OldLicenseNo);
+                            OldLicenseNo := companyLicHdr."License No.";
+
+                            IsBlank := CopyStr(companyLicHdr."License No.", 5, 5);
+                            if IsBlank = '' then
+                                NewLicenseNo := DelStr(companyLicHdr."License No.", 1, 5)
+                            else
+                                NewLicenseNo := DelStr(companyLicHdr."License No.", 1, 4);
+                            companyLicHdr.Rename(companyLicHdr."Company Type", companyLicHdr."Company No.", companyLicHdr."Ship-to-Code", NewLicenseNo, 'GPHC');
+
+
+                            //Update Line++
+                            reccomplicenseline.Reset();
+                            reccomplicenseline.SetRange("Company Type", companyLicHdr."Company Type");
+                            reccomplicenseline.SetRange("Company No.", companyLicHdr."Company No.");
+                            reccomplicenseline.SetRange("License Code", companyLicHdr."License Code");
+                            reccomplicenseline.SetRange("License No.", OldLicenseNo);
+                            if reccomplicenseline.FindSet() then begin
+                                repeat
+                                    reccomplicenseline1.Reset();
+                                    reccomplicenseline1.SetRange("Company Type", reccomplicenseline."Company Type");
+                                    reccomplicenseline1.SetRange("Company No.", reccomplicenseline."Company No.");
+                                    reccomplicenseline1.SetRange("License Code", reccomplicenseline."License Code");
+                                    reccomplicenseline1.SetRange("License No.", OldLicenseNo);
+                                    reccomplicenseline1.SetRange("Line No.", reccomplicenseline."Line No.");
+                                    if reccomplicenseline1.FindFirst() then begin
+                                        reccomplicenseline1.Rename(reccomplicenseline1."Company Type", reccomplicenseline1."Company No.", NewLicenseNo, reccomplicenseline1."License Code", reccomplicenseline1."Line No.")
+                                    end;
+                                until reccomplicenseline.Next() = 0;
+                            end;
+                        until companyLicHdr.Next() = 0;
+                    end;
+                end;
+            }
         }
+
     }
 }
